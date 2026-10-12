@@ -1,0 +1,48 @@
+# ShipNow Backend - Pre-entregas Módulo 1, 2 y 3
+
+API REST desarrollada para "ShipNow", construida bajo una arquitectura profesional por capas (**Controller ➔ Service ➔ Repository**), con validación estricta de variables de entorno, un sistema completo de Mocking y Carga de Datos de Prueba (Seed), y una capa centralizada de manejo profesional de errores.
+
+# Tecnologías Utilizadas
+1. Node.js (Soporte de módulos ES import/export)
+2. Express (Framework web y gestión de rutas/middlewares)
+3. Mongoose (ODM para MongoDB)
+4. Dotenv (Gestión segura de variables de entorno)
+5. @faker-js/faker (Generación de datos falsos realistas)
+6. Nodemon (Desarrollo en tiempo real)
+
+# Instrucciones para Correr el Proyecto Localmente
+Sigue estos pasos en tu terminal para clonar y poner en marcha el proyecto en tu máquina:
+
+1. Clonar el repositorio:
+    git clone <URL_DE_TU_REPOSITORIO>
+    cd shipnow-backend
+2. Instalar las dependencias:
+    npm install
+3. Configurar las variables de entorno:
+    Duplica el archivo .env.example y renómbralo a .env.
+    Completa los valores requeridos (puerto y MONGODB_URI).
+4. Iniciar el servidor en modo desarrollo:
+    npm run dev
+
+# Documentación de Endpoints y Pruebas
+1. Módulo de Mocking (Datos en memoria sin persistencia)
+Genera datos simulados mediante @faker-js/faker validando los parámetros recibidos.
+Generar usuarios: GET http://localhost:8080/api/mocks/users?qty=3
+Generar productos: GET http://localhost:8080/api/mocks/products?qty=3
+
+2. Módulo de Carga Controlada (Seed en MongoDB)
+Inserta registros de forma masiva manteniendo relaciones coherentes entre colecciones (Usuarios, Productos, Pedidos con prioridades y Entregas asignadas).
+Ejecutar Seed masivo: POST http://localhost:8080/api/mocks/seed?qty=5
+
+# Manejo Profesional de Errores (Módulo 3)
+La aplicación centraliza la gestión de excepciones eliminando bloques dispersos en los controladores:
+
+1. Clases Personalizadas (CustomError): Permiten lanzar errores descriptivos con un código HTTP asociado y causas técnicas.
+2. Middleware Global (errorHandler): Ubicado al final del pipeline de Express, intercepta cualquier excepción del dominio y devuelve una estructura JSON uniforme:
+{
+  "status": "error",
+  "error": "InvalidQuantityError",
+  "message": "La cantidad solicitada para la generacion de datos es invalida.",
+  "cause": "El parametro 'qty' recibido ('0') no es valido. Debe ser un numero mayor a 0."
+}
+3. Validación en Mocks: Ante casos inválidos (como qty=0 o valores negativos), el servicio intercepta el error y responde de forma controlada a través del middleware.
