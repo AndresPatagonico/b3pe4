@@ -46,3 +46,23 @@ La aplicación centraliza la gestión de excepciones eliminando bloques disperso
   "cause": "El parametro 'qty' recibido ('0') no es valido. Debe ser un numero mayor a 0."
 }
 3. Validación en Mocks: Ante casos inválidos (como qty=0 o valores negativos), el servicio intercepta el error y responde de forma controlada a través del middleware.
+
+## Logging y Monitoreo (Módulo 4)
+
+La aplicación utiliza **Winston** para un logging estructurado y profesional, reemplazando los `console.log` tradicionales.
+
+### Niveles de Log Configurados
+* **`fatal`**: Fallas críticas del sistema que impiden la ejecución.
+* **`error`**: Errores de cliente o excepciones operativas.
+* **`warning`**: Advertencias de negocio o situaciones atípicas (ej. stock bajo).
+* **`info`**: Eventos importantes (ej. servidor iniciado, conexión a BD).
+* **`http`**: Peticiones HTTP entrantes.
+* **`debug`**: Información técnica detallada (activa principalmente en desarrollo).
+
+### Endpoint de Prueba del Logger
+Puedes verificar el funcionamiento de todos los niveles ejecutando:
+* **GET** `http://localhost:8080/api/test-logger`
+
+### Persistencia y Rotación
+Los logs de nivel `error` y `fatal` se almacenan automáticamente en la carpeta `logs/` mediante `winston-daily-rotate-file`, asegurando la rotación diaria y evitando la saturación del disco. Esta carpeta se encuentra excluida en el `.gitignore`.
+
